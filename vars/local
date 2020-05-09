@@ -1,0 +1,5 @@
+---
+install_certbot: false
+gollum_login_username: tester
+gollum_login_password: "tester"
+github_ssh_repo_url:

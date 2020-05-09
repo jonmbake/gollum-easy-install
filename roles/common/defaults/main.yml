@@ -1,0 +1,4 @@
+---
+github_deploy_key_passphrase: ""
+git_email: "gollum@example.com"
+git_name: "Gollum"

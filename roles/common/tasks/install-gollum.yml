@@ -1,0 +1,66 @@
+- name: Install gollum
+  gem:
+    name: gollum
+    user_install: no
+  notify: Restart Gollum
+
+- name: Check gollum data dir
+  stat:
+    path: /home/gollum/data
+  register: gollum_data_dir
+
+- name: Create gollum user
+  user:
+    name: gollum
+  when: not gollum_data_dir.stat.exists
+
+- name: Init gollum data git dir
+  shell: git init /home/gollum/data
+  become: yes
+  become_user: gollum
+  when: not gollum_data_dir.stat.exists
+  notify: Restart Gollum
+
+- name: Add post commit push hook
+  template:
+    src: git-config.j2
+    dest: /home/gollum/data/.git/config
+    mode: '0644'
+    owner: gollum
+    group: gollum
+
+- name: Ensure ~/.ssh dir exists (so we can set known hosts)
+  file:
+    path: /home/gollum/.ssh
+    state: directory
+    mode: '0700'
+    owner: gollum
+    group: gollum
+
+- name: Add github.com to ssh known hosts
+  shell: ssh-keyscan github.com > /home/gollum/.ssh/known_hosts
+  become: yes
+  become_user: gollum
+
+- name: Check ssh key
+  stat:
+    path: /home/gollum/.ssh/id_rsa
+  register: ssh_key
+
+- name: Generate git deploy key
+  shell: ssh-keygen -t rsa -b 4096 -f /home/gollum/.ssh/id_rsa -N "{{ github_deploy_key_passphrase }}" -C "{{ git_email }}" && eval "$(ssh-agent -s)" && ssh-add /home/gollum/.ssh/id_rsa
+  become: yes
+  become_user: gollum
+  when: not ssh_key.stat.exists
+
+- name: Add gollum config
+  template:
+    src: gollum-config.rb
+    dest: /home/gollum/data
+    mode: '0755'
+    owner: gollum
+    group: gollum
+  notify: Restart Gollum
+
+- name: Create gollum service
+  template: src=gollum.service.j2 dest=/lib/systemd/system/gollum.service mode=644

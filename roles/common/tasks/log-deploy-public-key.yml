@@ -1,0 +1,6 @@
+- shell: cat /home/gollum/.ssh/id_rsa.pub
+  register: result
+
+- name: Log Github deploy public key. (Add the follow Deploy key to your Github notes repository).
+  debug:
+    var: result.stdout

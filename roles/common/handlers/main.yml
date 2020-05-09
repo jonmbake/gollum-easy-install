@@ -1,0 +1,13 @@
+---
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+
+- name: Restart Gollum
+  service:
+    name: gollum
+    daemon_reload: true
+    state: restarted
+    enabled: yes

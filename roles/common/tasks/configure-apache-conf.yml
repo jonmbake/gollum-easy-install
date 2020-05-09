@@ -1,0 +1,37 @@
+- name: Configure Gollum with Apache
+  blockinfile:
+    path: /etc/apache2/sites-available/{{ apache_site_conf_name }}
+    marker: "# {mark} Gollum"
+    insertafter: '^\s*<VirtualHost \S+:443>'
+    block: |
+      ProxyPass / http://localhost:4567/
+      ProxyPassReverse / http://localhost:4567/
+      <Location />
+        AuthType Basic
+        AuthName "Restricted Content"
+        AuthUserFile /etc/apache2/.htpasswd
+        Require valid-user
+      </Location>
+  notify:
+    - Restart Apache
+
+- name: Configure Apache to set Location header as https
+  blockinfile:
+    path: /etc/apache2/sites-available/{{ apache_site_conf_name }}
+    marker: "# {mark} Edit Location header for https"
+    insertbefore: '^\s*<VirtualHost \S+:443>'
+    block: |
+      Header edit Location ^http: https:
+  notify:
+    - Restart Apache
+
+- name: Redirect HTTP to HTTPS
+  blockinfile:
+    path: /etc/apache2/sites-available/{{ apache_site_conf_name }}
+    marker: "# {mark} HTTP to HTTPS redirect"
+    insertafter: '^\s*<VirtualHost \S+:80>'
+    block: |
+      Redirect permanent / https://{{ certbot_domain_name }}/
+  when: certbot_domain_name is defined
+  notify:
+    - Restart Apache

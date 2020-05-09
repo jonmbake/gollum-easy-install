@@ -1,0 +1,7 @@
+---
+install_certbot: true
+gollum_login_username:
+gollum_login_password:
+certbot_contact_email:
+certbot_domain_name:
+github_ssh_repo_url:

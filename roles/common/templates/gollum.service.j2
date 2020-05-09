@@ -1,0 +1,16 @@
+[Unit]
+Description=Gollum
+Requires=network.target
+
+[Service]
+WorkingDirectory=/home/gollum/data
+ExecStart=/usr/local/bin/gollum /home/gollum/data --config /home/gollum/data/gollum-config.rb
+
+User=gollum
+Group=gollum
+PIDFile=/var/run/gollum-server.pid
+StandardOutput=file:/var/log/gollum.log
+StandardError=file:/var/log/gollum-error.log
+
+[Install]
+WantedBy=multi-user.target

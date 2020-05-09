@@ -1,0 +1,46 @@
+- name: Set apache_site_conf_name based on if certbot is being installed
+  set_fact:
+    apache_site_conf_name: "{{ '000-default-le-ssl.conf' if install_certbot else 'default-ssl.conf' }}"
+
+- name: Remove deault Apache page
+  file:
+    state: absent
+    path: /var/www/html/index.html
+
+- name: Enable default Apache SSL site
+  command: a2ensite default-ssl
+  notify: Restart Apache
+  when: not install_certbot
+
+- name: Enable Apache Proxy module
+  apache2_module:
+    state: present
+    name: proxy
+  notify: Restart Apache
+
+- name: Enable Apache Proxy HTTP module
+  apache2_module:
+    state: present
+    name: proxy_http
+  notify: Restart Apache
+
+- name: Enable Apache Proxy Connect module
+  apache2_module:
+    state: present
+    name: proxy_connect
+  notify: Restart Apache
+
+- name: Enable Apache headers module
+  apache2_module:
+    state: present
+    name: headers
+  notify: Restart Apache
+
+- name: Enable Apache SSL module
+  apache2_module:
+    state: present
+    name: ssl
+  notify: Restart Apache
+
+- name: Create Apache password file
+  shell: htpasswd -cb /etc/apache2/.htpasswd "{{ gollum_login_username }}" "{{ gollum_login_password }}"

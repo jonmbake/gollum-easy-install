@@ -1,0 +1,10 @@
+---
+- include: install-packages.yml
+- include: upgrade-packages.yml
+- include: configure-firewall.yml
+- include: configure-apache.yml
+- include: setup-certbot.yml
+  when: install_certbot
+- include: configure-apache-conf.yml
+- include: install-gollum.yml
+- include: log-deploy-public-key.yml

@@ -1,0 +1,32 @@
+- name: Firewall | Allow outgoing
+  ufw:
+    direction: outgoing
+    policy: allow
+
+- name: Firewall | Deny incoming
+  ufw:
+    direction: incoming
+    policy: deny
+
+- name: Firewall | Limit SSH
+  ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+
+- name: Firewall | Open port 443
+  ufw:
+    rule: allow
+    port: '443'
+    proto: tcp
+
+# Required for certbot to validate certificate.
+- name: Firewall | Open port 80
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Firewall | Enable
+  ufw:
+    state: enabled

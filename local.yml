@@ -1,0 +1,8 @@
+- hosts: local
+  connection: local
+  become: yes
+  vars_files:
+    - vars/common
+    - vars/local
+  roles:
+    - common

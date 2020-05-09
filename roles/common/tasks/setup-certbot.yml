@@ -1,0 +1,15 @@
+- name: Add certbot repo
+  apt_repository:
+    repo: ppa:certbot/certbot
+    state: present
+  when: ansible_distribution_major_version < 20
+
+- name: Install Certbot
+  apt:
+    pkg:
+      - certbot
+      - python3-certbot-apache
+    force_apt_get: true
+
+- name: Invoke Certbot
+  command: certbot --apache -n --agree-tos -m {{ certbot_contact_email }} -d {{ certbot_domain_name }}
