@@ -18,17 +18,17 @@ An [Ansible](https://docs.ansible.com/) playbook to provision a secure, private 
 
 First make sure there is a fresh _Ubuntu 18.04 or 20.04_ instance where you want to install Gollum on. Also, make sure you can ssh in, e.g. running the command `ssh root@my-gollum-wiki.com` should be successful.
 
-# 1 - Create a Blank Github Repo to Store Your Wiki Notes
+### 1 - Create a Blank Github Repo to Store Your Wiki Notes
 
 ![Create Blank Github Repo](https://raw.githubusercontent.com/jonmbake/screenshots/master/gollum-easy-install/init-repo.png)
 
 \* If you want your notes to be secret, make sure the repo is set to _Private_.
 
-# 2 - Copy Clone URL
+### 2 - Copy Clone URL
 
 ![Copy Clone URL](https://raw.githubusercontent.com/jonmbake/screenshots/master/gollum-easy-install/copy-clone-url.png)
 
-# 3 - Update vars/site With Your Settings
+### 3 - Update vars/site With Your Settings
 
 For example:
 
@@ -40,14 +40,14 @@ certbot_domain_name: notes.jonbake.com
 github_ssh_repo_url: git@github.com:jonmbake/wiki-notes.git
 ```
 
-# 4 - Update Inventory With Your Domain Name
+### 4 - Update Inventory With Your Domain Name
 
 ```
 [prod]
 notes.jonbake.com ansible_user=root
 ```
 
-# 5 - Run the Ansible Provisioning Playbook Script
+### 5 - Run the Ansible Provisioning Playbook Script
 
 ```
 ansible-playbook -i inventory site.yml
@@ -57,13 +57,13 @@ Towards the end of the playbook, the Github deploy public key will be logged:
 
 ![Copy Clone URL](https://raw.githubusercontent.com/jonmbake/screenshots/master/gollum-easy-install/log-deploy-key.png)
 
-# 6 - Add Deploy Public Key to Your Github Repo
+### 6 - Add Deploy Public Key to Your Github Repo
 
 ![Copy Clone URL](https://raw.githubusercontent.com/jonmbake/screenshots/master/gollum-easy-install/add-deploy-key-github.png)
 
 **Make sure to click _Allow write access_**
 
-#7 - Navigate to Your Gollum Instance - Verify Things Work
+### 7 - Navigate to Your Gollum Instance - Verify Things Work
 
 1. Login with `gollum_login_username` and `gollum_login_password`
 
