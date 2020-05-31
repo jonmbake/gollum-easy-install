@@ -89,7 +89,7 @@ Add the logged _deploy public key_ to your Github repo.
 
 ## Useful Server Commands
 
-Rstart gollum:
+Restart gollum:
 
 ```
 sudo service gollum restart
