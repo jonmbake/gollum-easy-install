@@ -87,6 +87,33 @@ vagrant up
 
 Add the logged _deploy public key_ to your Github repo.
 
+## Useful Server Commands
+
+Rstart gollum:
+
+```
+sudo service gollum restart
+```
+
+View the gollum logs:
+
+```
+tail /var/log/gollum.log
+```
+
+Navigate to local gollum wiki directory:
+
+```
+cd /home/gollum/data
+```
+
+Update gollum configuration:
+
+```
+sudo su gollum
+vim /home/gollum/data/gollum-config.rb
+```
+
 ## To Dos
 
 - Add web hook so changes made outside of instance are synced
